@@ -1,0 +1,9 @@
+{
+	"name": "adf-elnaz-mini-dev",
+	"location": "germanywestcentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "940d7a62-fb37-4e06-8c36-68f1d0cabbf2",
+		"tenantId": "b2efcef3-8496-40b8-9de8-f135982f3461"
+	}
+}
