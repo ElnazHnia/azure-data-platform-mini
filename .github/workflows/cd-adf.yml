@@ -18,10 +18,28 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Debug - list ARM template files
+        run: |
+          echo "=== Repo root ==="
+          ls -la
+          echo "=== Find ARM templates (maxdepth 6) ==="
+          find . -maxdepth 6 -type f -name "*ARMTemplate*"
+
       - name: Deploy ADF ARM template
         run: |
+          TEMPLATE=$(find . -maxdepth 6 -type f -name "ARMTemplateForFactory*.json" | head -n 1)
+          PARAMS=$(find . -maxdepth 6 -type f -name "ARMTemplateParametersForFactory*.json" | head -n 1)
+
+          echo "TEMPLATE=$TEMPLATE"
+          echo "PARAMS=$PARAMS"
+
+          if [ -z "$TEMPLATE" ] || [ -z "$PARAMS" ]; then
+            echo "ERROR: Could not find ARM template files."
+            exit 1
+          fi
+
           az deployment group create \
             --resource-group "rg-azure-data-mini-dev" \
-            --template-file ARMTemplateForFactory.json \
-            --parameters ARMTemplateParametersForFactory.json \
+            --template-file "$TEMPLATE" \
+            --parameters "$PARAMS" \
             --parameters factoryName="adf-elnaz-mini-dev"
