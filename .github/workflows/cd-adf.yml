@@ -1,7 +1,8 @@
 name: CD - Deploy ADF
-
 on:
   workflow_dispatch: {}
+  push:
+    branches: [ "adf_publish" ]
 
 jobs:
   deploy:
